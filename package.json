@@ -1,24 +1,31 @@
 {
-    "name": "rubysymbols",
-    "displayName": "rubysymbols",
-    "description": "",
+    "name": "ruby-symbols",
+    "displayName": "ruby-symbols",
+    "description": "VSCode Ruby symbols search methods",
     "version": "0.0.1",
-    "publisher": "miguelsavignano",
+    "publisher": "miguel-savignano",
+    "icon": "images/icon.png",
+    "keywords": [
+        "ruby",
+        "ruby symbols",
+        "search code"
+    ],
     "engines": {
         "vscode": "^1.5.0"
     },
     "categories": [
-        "Other"
+        "Languages"
     ],
     "activationEvents": [
         "onLanguage:ruby"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/otoniel-isidoro/vscode-ruby-ctags"
+    },
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
-        }]
+        "commands": []
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
