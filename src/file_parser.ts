@@ -21,11 +21,12 @@ export default class FileParser {
     var blocks = []
     var stack  = []
     this.lines.forEach( (line, index) =>{
-      let blockType = this.isBlock(line)
+      let lineParse = new LineParse(line)
+      let blockType = lineParse.getBlockType()
       if (blockType){
-        var incomplete_block = { name: this.getBlockName(line, blockType), start_line: index, type: blockType }
+        var incomplete_block = { name: lineParse.getBlockName(blockType), start_line: index, type: blockType }
         stack = [incomplete_block, ...stack]
-      }else if(this.isEndBlock(line)){
+      } else if (lineParse.isEndBlock()){
         let last_block = stack.shift() //remove the last element in the stack and return the last element
         last_block.end_line = index
         blocks = [...blocks, last_block]
@@ -33,29 +34,41 @@ export default class FileParser {
     })
     return blocks.filter((block) => block.type == "def")
   }
-  isBlock(line) { 
-    return (
-      this.isAClassBlock(line)  || this.isAModuleBlock(line)   ||
-      this.isAMethodBlock(line) || this.isAFunctionBlock(line) ||
-      this.isACaseBlock(line)   || this.isAConditionalBlock(line)
-    )
-  }
-  isEndBlock(line) { return line.trim() == "end" }
-  isAClassBlock(line)    { return /class /.test(line) && "class" }
-  isAModuleBlock(line)   { return /module /.test(line) && "module" }
-  isAMethodBlock(line)   { return /def /.test(line) && "def" }
-  isAFunctionBlock(line) { return /(do | do\|)/.test(line) && "do" }
-  isACaseBlock(line)     { return /case /.test(line) && "case"}
-  isAConditionalBlock(line) { 
-    if (/if /.test(line)) { return !/\w/.test(line.split("if")[0]) && "if" }
-    else if (/unless /.test(line)) { return !/\w/.test(line.split("unless")[0]) && "unless" }
-  }
-  getBlockName(line, blockType) {
-    if (blockType == "class")  { return line.replace("class", "").trim() }
-    if (blockType == "module") { return line.replace("module", "").trim() }
-    if (blockType == "def")    { return line.replace("def", "").trim() }
-    return undefined
-  }
 }
 
 const blockTypes = ["class", "module", "def", "do", "if", "unless", "case" ]
+
+class LineParse{
+  line;
+  constructor(line) { this.line = line }
+  isAClassBlock() { return /class /.test(this.line) }
+  isAModuleBlock() { return /module /.test(this.line)  }
+  isAMethodBlock() { return /def /.test(this.line) }
+  isAFunctionBlock() { return /(do | do\|)/.test(this.line) }
+  isACaseBlock() { return /case /.test(this.line) }
+  isAConditionalBlock() {
+    if (/if /.test(this.line)) { return !/\w/.test(this.line.split("if")[0]) }
+    else if (/unless /.test(this.line)) { return !/\w/.test(this.line.split("unless")[0]) }
+  }
+  isBlock() {
+    return (
+      this.isAClassBlock()    || this.isAModuleBlock() || this.isAMethodBlock() ||
+      this.isAFunctionBlock() || this.isACaseBlock()   || this.isAConditionalBlock()
+    )
+  }
+  getBlockType() {
+    if (this.isAClassBlock())      { return "class"  }
+    if (this.isAModuleBlock())     { return "module" }
+    if (this.isAMethodBlock())     { return "def"    }
+    if (this.isAFunctionBlock())   { return "do"     }
+    if (this.isACaseBlock())       { return "case"   }
+    if (this.isAConditionalBlock()){ return "if"     }
+  }
+  isEndBlock() { return this.line.trim() == "end" }
+  getBlockName(blockType) {
+    if (blockType == "class") { return this.line.replace("class", "").trim() }
+    if (blockType == "module") { return this.line.replace("module", "").trim() }
+    if (blockType == "def") { return this.line.replace("def", "").trim() }
+    return undefined
+  }
+}
