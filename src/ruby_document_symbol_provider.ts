@@ -12,13 +12,13 @@ export default class RubyDocumentSymbolProvider {
     let fileText = document.getText()
     let symbol_informations = new FileParser(fileText, token, document).symbol_informations()
     return symbol_informations.map((symbol_information) => {
-      const { name, type, rage} = symbol_information
+      const { name, type, start_line, end_line} = symbol_information
       const symbolKinds = {
           Class: SymbolKind.Class,
           Method: SymbolKind.Method,
       }
-      var _rage = new Range( new Position(rage.x.line, rage.x.character), new Position(rage.y.line, rage.y.character) );
-      return new SymbolInformation(name, symbolKinds[type], _rage)
+      var rage = new Range( new Position(start_line, 0), new Position(end_line, 0) );
+      return new SymbolInformation(name, symbolKinds[type], rage)
     })
   }
 }
