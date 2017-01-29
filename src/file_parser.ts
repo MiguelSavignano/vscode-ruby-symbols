@@ -21,8 +21,9 @@ export default class FileParser {
     var blocks = []
     var stack  = []
     this.lines.forEach( (line, index) =>{
-      if (this.isBlock(line)){
-        var incomplete_block = { name: this.getBlockName(line), start_line: index, type: this.getBlockType(line) }
+      let blockType = this.isBlock(line)
+      if (blockType){
+        var incomplete_block = { name: this.getBlockName(line, blockType), start_line: index, type: blockType }
         stack = [incomplete_block, ...stack]
       }else if(this.isEndBlock(line)){
         let last_block = stack.shift() //remove the last element in the stack and return the last element
@@ -32,17 +33,29 @@ export default class FileParser {
     })
     return blocks.filter((block) => block.type == "def")
   }
-  isBlock(line) { return /(def |if |do |do\||class)/.test(line) }
-  isEndBlock(line){ return /end/.test(line) }
-  getBlockType(line){
-    if (/def/.test(line))   { return "def" }
-    if (/if/.test(line))    { return "condition" }
-    if (/do/.test(line))    { return "function" }
-    if (/class/.test(line)) { return "class" }
+  isBlock(line) { 
+    return (
+      this.isAClassBlock(line)  || this.isAModuleBlock(line)   ||
+      this.isAMethodBlock(line) || this.isAFunctionBlock(line) ||
+      this.isACaseBlock(line)   || this.isAConditionalBlock(line)
+    )
   }
-  getBlockName(line) { return line.replace(this.getBlockType(line), "").trim() }
+  isEndBlock(line) { return line.trim() == "end" }
+  isAClassBlock(line)    { return /class /.test(line) && "class" }
+  isAModuleBlock(line)   { return /module /.test(line) && "module" }
+  isAMethodBlock(line)   { return /def /.test(line) && "def" }
+  isAFunctionBlock(line) { return /(do | do\|)/.test(line) && "do" }
+  isACaseBlock(line)     { return /case /.test(line) && "case"}
+  isAConditionalBlock(line) { 
+    if (/if /.test(line)) { return !/\w/.test(line.split("if")[0]) && "if" }
+    else if (/unless /.test(line)) { return !/\w/.test(line.split("unless")[0]) && "unless" }
+  }
+  getBlockName(line, blockType) {
+    if (blockType == "class")  { return line.replace("class", "").trim() }
+    if (blockType == "module") { return line.replace("module", "").trim() }
+    if (blockType == "def")    { return line.replace("def", "").trim() }
+    return undefined
+  }
 }
 
-// if (this.isOneLineBlock(line)) {
-//   block = [...blocks, { name: line, start_line: index, end_line: index }]
-// }
+const blockTypes = ["class", "module", "def", "do", "if", "unless", "case" ]
