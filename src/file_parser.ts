@@ -1,9 +1,9 @@
 // Example
 // {
 //   name: "some_method",
-//   type: "Method",
-//   start_line: 0,
-//   end_line: 1
+//   type: "def",
+//   start_line: 2,
+//   end_line: 5
 // }
 
 export default class FileParser {
@@ -32,7 +32,9 @@ export default class FileParser {
         blocks = [...blocks, last_block]
       }
     })
-    return blocks.filter((block) => block.type == "def")
+    return blocks.filter((block) => (
+      block.end_line && _.includes(["def", "class", "module"], block.type) 
+    ))
   }
 }
 
@@ -63,6 +65,7 @@ class LineParse{
     if (this.isAFunctionBlock())   { return "do"     }
     if (this.isACaseBlock())       { return "case"   }
     if (this.isAConditionalBlock()){ return "if"     }
+    return undefined
   }
   isEndBlock() { return this.line.trim() == "end" }
   getBlockName(blockType) {
@@ -71,4 +74,7 @@ class LineParse{
     if (blockType == "def") { return this.line.replace("def", "").trim() }
     return undefined
   }
+}
+class _ {
+  static includes = (array, value) => (array.indexOf(value) != -1)
 }

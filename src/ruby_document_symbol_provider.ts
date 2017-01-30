@@ -14,8 +14,8 @@ export default class RubyDocumentSymbolProvider {
     return symbol_informations.map((symbol_information) => {
       const { name, type, start_line, end_line} = symbol_information
       const symbolKinds = {
-          Class: SymbolKind.Class,
-          Method: SymbolKind.Method,
+        "class": SymbolKind.Class,
+        "def": SymbolKind.Method,
       }
       var rage = new Range( new Position(start_line, 0), new Position(end_line, 0) );
       return new SymbolInformation(name, symbolKinds[type], rage)
