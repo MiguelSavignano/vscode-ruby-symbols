@@ -38,7 +38,7 @@ export default class FileParser {
   }
 }
 
-const blockTypes = ["class", "module", "def", "do", "if", "unless", "case" ]
+const blockTypes = ["class", "module", "def", "do", "if", "unless", "case", "begin" ]
 
 class LineParse{
   line;
@@ -48,6 +48,7 @@ class LineParse{
   isAMethodBlock() { return /def /.test(this.line) }
   isAFunctionBlock() { return /(do | do\|)/.test(this.line) }
   isACaseBlock() { return /case /.test(this.line) }
+  isAExceptionHandlerBlock() { return this.line.trim() == "begin" }
   isAConditionalBlock() {
     if (/if /.test(this.line)) { return !/\w/.test(this.line.split("if")[0]) }
     else if (/unless /.test(this.line)) { return !/\w/.test(this.line.split("unless")[0]) }
@@ -55,7 +56,8 @@ class LineParse{
   isBlock() {
     return (
       this.isAClassBlock()    || this.isAModuleBlock() || this.isAMethodBlock() ||
-      this.isAFunctionBlock() || this.isACaseBlock()   || this.isAConditionalBlock()
+      this.isAFunctionBlock() || this.isACaseBlock()   || this.isAConditionalBlock() ||
+      this.isAExceptionHandlerBlock() 
     )
   }
   getBlockType() {
@@ -64,7 +66,8 @@ class LineParse{
     if (this.isAMethodBlock())     { return "def"    }
     if (this.isAFunctionBlock())   { return "do"     }
     if (this.isACaseBlock())       { return "case"   }
-    if (this.isAConditionalBlock()){ return "if"     }
+    if (this.isAConditionalBlock()){ return "if" }
+    if (this.isAExceptionHandlerBlock()){ return "begin" }
     return undefined
   }
   isEndBlock() { return this.line.trim() == "end" }
