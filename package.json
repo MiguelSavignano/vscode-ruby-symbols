@@ -2,7 +2,7 @@
     "name": "ruby-symbols",
     "displayName": "ruby-symbols",
     "description": "VSCode Ruby symbols search methods",
-    "version": "0.0.1",
+    "version": "0.1.1",
     "publisher": "miguel-savignano",
     "icon": "images/icon.png",
     "keywords": [
@@ -21,7 +21,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/otoniel-isidoro/vscode-ruby-ctags"
+        "url": "https://github.com/MiguelSavignano/vs-code-ruby-symbols"
     },
     "main": "./out/src/extension",
     "contributes": {

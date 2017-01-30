@@ -10,6 +10,8 @@ Search methos in ruby using go to symbol in file
 
 ## Release Notes
 
+### 0.1.0
+  fix if the file contain One line if statement
 ### 0.0.1
 
 -----------------------------------------------------------------------------------------------------------
