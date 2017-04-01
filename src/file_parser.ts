@@ -33,7 +33,7 @@ export default class FileParser {
       }
     })
     return blocks.filter((block) => (
-      block.end_line && _.includes(["def", "class", "module"], block.type) 
+      block.end_line && _.includes(["def", "class", "module"], block.type)
     ))
   }
 }
@@ -46,7 +46,7 @@ class LineParse{
   isAClassBlock() { return /class /.test(this.line) }
   isAModuleBlock() { return /module /.test(this.line)  }
   isAMethodBlock() { return /def /.test(this.line) }
-  isAFunctionBlock() { return /(do | do\|)/.test(this.line) }
+  isAFunctionBlock() { return /(do | do\| |do)/.test(this.line) }
   isACaseBlock() { return /case /.test(this.line) }
   isAExceptionHandlerBlock() { return this.line.trim() == "begin" }
   isAConditionalBlock() {
@@ -78,6 +78,6 @@ class LineParse{
     return undefined
   }
 }
-class _ {
-  static includes = (array, value) => (array.indexOf(value) != -1)
+const _ = {
+  includes: (array, value) => (array.indexOf(value) != -1)
 }

@@ -2,7 +2,7 @@
     "name": "ruby-symbols",
     "displayName": "ruby-symbols",
     "description": "VSCode Ruby symbols search methods",
-    "version": "0.1.2",
+    "version": "0.1.4",
     "publisher": "miguel-savignano",
     "author": "Miguel Savignano",
     "license": "SEE LICENSE IN LICENSE.md",
