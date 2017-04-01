@@ -38,7 +38,7 @@ export default class FileParser {
   }
 }
 
-const blockTypes = ["class", "module", "def", "do", "if", "unless", "case", "begin" ]
+const blockTypes = ["class", "module", "def", "do", "if", "unless", "case", "begin", "scope" ]
 
 class LineParse{
   line;
@@ -46,7 +46,7 @@ class LineParse{
   isAClassBlock() { return /class /.test(this.line) }
   isAModuleBlock() { return /module /.test(this.line)  }
   isAMethodBlock() { return /def /.test(this.line) }
-  isAFunctionBlock() { return /(do | do\| |do)/.test(this.line) }
+  isAFunctionBlock() { return this.line.split(" ").some( word => word == "do" ) }
   isACaseBlock() { return /case /.test(this.line) }
   isAExceptionHandlerBlock() { return this.line.trim() == "begin" }
   isAConditionalBlock() {

@@ -20,4 +20,8 @@ class MyClass
     12
   end
 
+  def hi2
+    "do"
+  end
+
 end
