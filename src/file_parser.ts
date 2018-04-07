@@ -60,7 +60,7 @@ class LineParse{
   isAMethodBlock() { return /def /.test(this.line) }
   isAFunctionBlock() { return this.line.split(" ").some( word => word == "do" ) }
   isACaseBlock() { return /case /.test(this.line) }
-  isAExceptionHandlerBlock() { return this.line.trim() == "begin" }
+  isAExceptionHandlerBlock() { return /( begin|begin )/.test(this.line) }
   isAConditionalBlock() {
     if (/if /.test(this.line)) { return !/\w/.test(this.line.split("if")[0]) }
     else if (/unless /.test(this.line)) { return !/\w/.test(this.line.split("unless")[0]) }

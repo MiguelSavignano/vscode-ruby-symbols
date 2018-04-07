@@ -38,7 +38,7 @@ describe("FileParser", () => {
     });
   });
 
-  it("symbol_informations test/examples/example1.rb", (done) => {
+  it("symbol_informations test/examples/example2.rb", (done) => {
     fs.readFile('test/examples/example2.rb', function read(err, data) {
       if (err) { throw err; }
       let fileString = data.toString()
@@ -47,6 +47,23 @@ describe("FileParser", () => {
       let result = fileparser.symbol_informations()
       console.log(result)
       expect(result).to.deep.equal(expectedResult2)
+      done();
+    });
+  });
+
+  it("symbol_informations test/examples/example3.rb", (done) => {
+    const expectedResult3 = [
+      { name: 'method1', start_line: 1, type: 'def', end_line: 7 },
+      { name: 'method2', start_line: 9, type: 'def', end_line: 14 },
+      { name: 'MyClass', start_line: 0, type: 'class', end_line: 15 }
+    ]
+    fs.readFile('test/examples/example3.rb', function read(err, data) {
+      if (err) { throw err; }
+      let fileString = data.toString()
+      let fileparser = new FileParser(fileString, "", "")
+      let result = fileparser.symbol_informations()
+      console.log(result)
+      expect(result).to.deep.equal(expectedResult3)
       done();
     });
   });
