@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import FileParser from "../src/file_parser"
 var fs = require("fs")
 
-const  expectedResult = [
+const expectedResult1 = [
   { name: 'method1', start_line: 1, type: 'def', end_line: 2 },
   { name: 'method1', start_line: 4, type: 'def', end_line: 8 },
   { name: 'method2', start_line: 10, type: 'def', end_line: 14 },
@@ -18,9 +18,14 @@ const  expectedResult = [
   { name: 'MyClass2', start_line: 39, type: 'class', end_line: 44 }
 ]
 
+const expectedResult2 = [
+  { name: 'hi', start_line: 18, type: 'def', end_line: 20 },
+  { name: 'hi2', start_line: 22, type: 'def', end_line: 24 },
+  { name: 'MyClass', start_line: 0, type: 'class', end_line: 26 }
+]
+
 describe("FileParser", () => {
   it("symbol_informations test/examples/example1.rb", (done) => {
-    let fileString = "class MyClass\ndef method1\nend\n"
     fs.readFile('test/examples/example1.rb', function read(err, data) {
       if (err) { throw err; }
       let fileString = data.toString()
@@ -28,7 +33,20 @@ describe("FileParser", () => {
       // let result = fileparser.lines
       let result = fileparser.symbol_informations()
       console.log(result)
-      expect(result).to.deep.equal(expectedResult)
+      expect(result).to.deep.equal(expectedResult1)
+      done();
+    });
+  });
+
+  it("symbol_informations test/examples/example1.rb", (done) => {
+    fs.readFile('test/examples/example2.rb', function read(err, data) {
+      if (err) { throw err; }
+      let fileString = data.toString()
+      let fileparser = new FileParser(fileString, "", "")
+      // let result = fileparser.lines
+      let result = fileparser.symbol_informations()
+      console.log(result)
+      expect(result).to.deep.equal(expectedResult2)
       done();
     });
   });
