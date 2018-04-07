@@ -6,32 +6,44 @@
 //   end_line: 5
 // }
 
+class CodeBlock {
+  name: String
+  type: String
+  start_line: Number
+  end_line: Number
+
+  isComplete() {
+    return this.start_line && this.end_line
+  }
+}
+
 export default class FileParser {
   fileText;
-  token;
-  document;
   lines;
   constructor(fileText, token, document) {
     this.fileText = fileText
     this.lines    = this.fileText.split("\n")
-    this.token    = fileText
-    this.document = document
   }
   symbol_informations() {
     var blocks = []
     var stack  = []
     this.lines.forEach( (line, index) =>{
       let lineParse = new LineParse(line)
-      let blockType = lineParse.getBlockType()
-      if (blockType){
+      if (lineParse.isBlock()){
+        let blockType = lineParse.getBlockType()
         var incomplete_block = { name: lineParse.getBlockName(blockType), start_line: index, type: blockType }
         stack = [incomplete_block, ...stack]
       } else if (lineParse.isEndBlock()){
         let last_block = stack.shift() //remove the last element in the stack and return the last element
+        if(!last_block) return console.log("current stack",stack)
         last_block.end_line = index
         blocks = [...blocks, last_block]
       }
     })
+    return this.getPermitedBlocks(blocks)
+  }
+
+  getPermitedBlocks(blocks) {
     return blocks.filter((block) => (
       block.end_line && _.includes(["def", "class", "module"], block.type)
     ))
@@ -48,7 +60,7 @@ class LineParse{
   isAMethodBlock() { return /def /.test(this.line) }
   isAFunctionBlock() { return this.line.split(" ").some( word => word == "do" ) }
   isACaseBlock() { return /case /.test(this.line) }
-  isAExceptionHandlerBlock() { return this.line.trim() == "begin" }
+  isAExceptionHandlerBlock() { return /( begin|begin )/.test(this.line) }
   isAConditionalBlock() {
     if (/if /.test(this.line)) { return !/\w/.test(this.line.split("if")[0]) }
     else if (/unless /.test(this.line)) { return !/\w/.test(this.line.split("unless")[0]) }
@@ -57,7 +69,7 @@ class LineParse{
     return (
       this.isAClassBlock()    || this.isAModuleBlock() || this.isAMethodBlock() ||
       this.isAFunctionBlock() || this.isACaseBlock()   || this.isAConditionalBlock() ||
-      this.isAExceptionHandlerBlock() 
+      this.isAExceptionHandlerBlock()
     )
   }
   getBlockType() {
