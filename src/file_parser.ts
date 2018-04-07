@@ -35,6 +35,7 @@ export default class FileParser {
         stack = [incomplete_block, ...stack]
       } else if (lineParse.isEndBlock()){
         let last_block = stack.shift() //remove the last element in the stack and return the last element
+        if(!last_block) return console.log("current stack",stack)
         last_block.end_line = index
         blocks = [...blocks, last_block]
       }
