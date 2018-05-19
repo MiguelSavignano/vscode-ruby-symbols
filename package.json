@@ -42,10 +42,10 @@
         "chai": "^4.1.2",
         "mocha": "^2.5.3",
         "ts-node": "^5.0.1",
-        "typescript": "^2.0.3",
-        "vscode": "^1.1.17"
+        "typescript": "^2.0.3"
     },
     "dependencies": {
+        "vscode": "^1.1.17",
         "fs": "0.0.1-security"
     }
 }
