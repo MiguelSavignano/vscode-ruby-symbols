@@ -43,7 +43,7 @@
         "mocha": "^2.5.3",
         "ts-node": "^5.0.1",
         "typescript": "^2.0.3",
-        "vscode": "^1.0.0"
+        "vscode": "^1.1.17"
     },
     "dependencies": {
         "fs": "0.0.1-security"
