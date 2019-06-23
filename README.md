@@ -2,7 +2,7 @@
 
 Search methos in ruby using go to symbol in file
 
-using Vscode api (go-to-symbol)[https://code.visualstudio.com/docs/editor/editingevolved#_go-to-symbol]
+using VScode api (go-to-symbol)[https://code.visualstudio.com/docs/editor/editingevolved#_go-to-symbol]
 
 ## Features
 
