@@ -7,7 +7,7 @@ interface ICodeBlock {
 
 interface ICodeBlockComplete {
   name: string;
-  type: string;
+  type: "class" | "def";
   startLine: number;
   endLine: number;
 }

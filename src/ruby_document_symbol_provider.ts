@@ -4,13 +4,15 @@ import {
   SymbolKind,
   Range,
   Position,
-  DocumentSymbolProvider
+  DocumentSymbolProvider,
+  TextDocument,
+  CancellationToken
 } from "vscode";
 import FileParser from "./file_parser";
 
 export default class RubyDocumentSymbolProvider
   implements DocumentSymbolProvider {
-  provideDocumentSymbols(document, token) {
+  provideDocumentSymbols(document: TextDocument, token: CancellationToken) {
     let fileText = document.getText();
     let symbolInformations = new FileParser(
       fileText,
