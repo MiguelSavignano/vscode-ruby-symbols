@@ -1,24 +1,34 @@
+// https://code.visualstudio.com/api/references/vscode-api#2449
 import {
   SymbolInformation,
   SymbolKind,
   Range,
-  Position
-} from 'vscode';
-import FileParser from './file_parser'
+  Position,
+  DocumentSymbolProvider
+} from "vscode";
+import FileParser from "./file_parser";
 
-export default class RubyDocumentSymbolProvider {
-  constructor() {}
+export default class RubyDocumentSymbolProvider
+  implements DocumentSymbolProvider {
   provideDocumentSymbols(document, token) {
-    let fileText = document.getText()
-    let symbol_informations = new FileParser(fileText, token, document).symbol_informations()
-    return symbol_informations.map((symbol_information) => {
-      const { name, type, start_line, end_line} = symbol_information
+    let fileText = document.getText();
+    let symbolInformations = new FileParser(
+      fileText,
+      token,
+      document
+    ).symbolInformations();
+
+    return symbolInformations.map(symbolInformation => {
+      const { name, type, startLine, endLine } = symbolInformation;
       const symbolKinds = {
-        "class": SymbolKind.Class,
-        "def": SymbolKind.Method,
-      }
-      var rage = new Range( new Position(start_line, 0), new Position(end_line, 0) );
-      return new SymbolInformation(name, symbolKinds[type], rage)
-    })
+        class: SymbolKind.Class,
+        def: SymbolKind.Method
+      };
+      var rage = new Range(
+        new Position(startLine, 0),
+        new Position(endLine, 0)
+      );
+      return new SymbolInformation(name, symbolKinds[type], rage);
+    });
   }
 }
