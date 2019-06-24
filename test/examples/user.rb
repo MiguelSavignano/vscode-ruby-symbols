@@ -5,17 +5,8 @@ module MyApp
       @last_name = last_name
     end
 
-    def name
-      @name
-    end
-
-    def last_name
-      @last_name
-    end
-
     def full_name
-      "#{self.name} #{self.last_name}"
+      "#{name} #{last_name}"
     end
-
   end
 end
