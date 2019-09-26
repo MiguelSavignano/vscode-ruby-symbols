@@ -1,6 +1,6 @@
 # Ruby Symbols
 
-Search modules, class and methos in ruby files using vscode [go to symbol](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-symbol)
+Search modules, class and methods in ruby files using vscode [go to symbol](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-symbol)
 
 ![vscode-ruby-symbols example](https://raw.githubusercontent.com/MiguelSavignano/vscode-ruby-symbols/master/images/demo.gif)
 
